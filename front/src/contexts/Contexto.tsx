@@ -25,7 +25,7 @@ const wordReducer = (state: WordState, action: WordAction): WordState => {
 
 export const Contexto = createContext<WordContextProps | undefined>( undefined );
 
-export function Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   /*
   const [words, setWords] = useState([] as WordProps[]);
   const list = async () => {};
