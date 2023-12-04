@@ -1,52 +1,44 @@
-import { createContext, useEffect, useState, useReducer} from "react";
+import { createContext, useEffect, useState } from "react";
 import { ContextProps, WordProps } from "../types";
 import service from "../services";
 
-interface WordContextProps extends ContextProps {
-    resetWords: () => void;
-}
+export const Contexto = createContext({} as ContextProps);
 
-interface WordState {
-    word: WordProps[];
-}
+export function Provider({ children }: any) {
+  const [word, setWords] = useState([] as WordProps[]);
 
-type WordAction = 
-    | { type: "setWords"; payload: WordProps[] }
-    | { type: "createWord"; payload: { name: string } }
-
-const wordReducer = (state: WordState, action: WordAction): WordState => {
-    switch (action.type) {
-        case "setWords":
-            return {...state, word: action.payload}
-        default:
-            return state;
+  const list = async () => {
+    try {
+        const wordList = await service.list();
+        setWords(wordList);
+    } catch (error) {
+        console.error("Erro ao buscar os nomes:", error);
     }
-}
+  };
 
-export const Contexto = createContext<WordContextProps | undefined>( undefined );
+  const create = async (name: string) => {
+    try {
+        await service.create(name);
+        await list();
+    } catch (error) {
+        console.error("Erro ao escrever o nome:", error);
+    }
+  };
 
-export const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  /*
-  const [words, setWords] = useState([] as WordProps[]);
-  const list = async () => {};
-  const create = async (name: string) => {};
-  const remove = async (id: number) => {};
-  */
- const [state, dispatch] = useReducer(wordReducer, { word: []});
+  const remove = async (id: number) => {
+    try {
+        await service.remove(id);
+        await list();
+    } catch (error) {
+        console.error("Erro ao remover o nome:", error)
+    }
+  };
 
   useEffect(() => {
-    async function fecthData() {
-        try {
-            const response = await list()
-            dispatchEvent({type: "setWord", payload: response});
-        } catch (error) {
-            console.error ("Erro ao buscar dados do backend:", error);
-        }
-    }
-    fecthData();
+    list()
   }, []);
   return (
-    <Contexto.Provider value={{ words, create, remove }}>
+    <Contexto.Provider value={{ word, create, remove }}>
       {children}
     </Contexto.Provider>
   );
