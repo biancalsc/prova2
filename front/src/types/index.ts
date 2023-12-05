@@ -10,5 +10,6 @@ export interface ResponseProps {
 
 export interface WordProps {
     id: number;
-    name: string;
+    name:string;
+    chars: string[]; 
 }

@@ -1,32 +1,36 @@
+import React from "react";
 import { Provider, useWord } from "../../hooks";
-import { ContextProps, WordProps } from "../../types";
+import { WordProps } from "../../types";
 import styled from "styled-components";
+
 const StyledDiv = styled.div`
   display: flex;
 `;
 
-interface StyledWordDivProps extends ContextProps {
-    onClick: () => void;
-}
+const StyledWordDiv = styled.div`
+  background: orange;
+  color: white;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 5px;
+  margin: 2px;
+`;
 
-const StyledWordDiv = styled.div<StyledWordDivProps>`
-background: red;
-color: white;
-width: 50px;
-heigth: 50px;
-`
+export default function List() {
+  const { words } = useWord();
 
-export default function List(){
-    const {words}  = useWord();
-
-    return (
-        <div>
-            <Provider>
-
-            </Provider>
-            {
-                JSON.stringify(words)
-            }
-        </div>
-    );
+  return (
+    <div>
+      <Provider>
+        {words.map((word: WordProps) => (
+          <StyledDiv key={word.id}>
+            {word.chars.map((char, index) => (
+              <StyledWordDiv key={index}>{char}</StyledWordDiv>
+            ))}
+          </StyledDiv>
+        ))}
+      </Provider>
+    </div>
+  );
 }
