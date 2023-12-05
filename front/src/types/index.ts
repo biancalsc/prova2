@@ -1,5 +1,5 @@
 export interface ContextProps {
-    word: WordProps[];
+    words: WordProps[];
     create: (name: string) => Promise<void>;
     remove: (id: number) => Promise<void>;
 }
