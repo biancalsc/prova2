@@ -1,8 +1,23 @@
 import { createContext, useEffect, useState } from "react";
 import { ContextProps, WordProps } from "../types";
 import service from "../services";
+import styled from "styled-components";
+const StyledDiv = styled.div`
+  display: flex;
+`;
 
 export const Contexto = createContext({} as ContextProps);
+
+const StyledButton = styled.button`
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  height: 45px;
+`;
 
 export function Provider({ children }: any) {
   const [words, setWords] = useState([] as WordProps[]);
