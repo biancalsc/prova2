@@ -2,6 +2,7 @@ import React from "react";
 import { Provider, useWord } from "../../hooks";
 import { WordProps } from "../../types";
 import styled from "styled-components";
+import service from "../../services";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -24,9 +25,9 @@ export default function List() {
     <div>
       <Provider>
         {words.map((word: WordProps) => (
-          <StyledDiv key={word.id}>
+          <StyledDiv key={word.id} >
             {word.chars.map((char, index) => (
-              <StyledWordDiv key={index}>{char}</StyledWordDiv>
+              <StyledWordDiv onClick={e => service.remove(word.id)} key={index}>{char}</StyledWordDiv>
             ))}
           </StyledDiv>
         ))}
